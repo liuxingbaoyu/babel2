@@ -31,10 +31,9 @@ const batchedStrings = [];
 let batchId = 0;
 
 process.stdin.on("data", function listener(chunk) {
-  const str = String(chunk).trim();
-  if (!str) return;
-
   process.nextTick(function () {
+    const str = String(chunk).trim();
+    if (!str) return;
     if (str.startsWith("src")) {
       batchedStrings.push(str);
     } else {
