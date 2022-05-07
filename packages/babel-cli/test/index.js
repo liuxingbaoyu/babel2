@@ -182,7 +182,7 @@ const buildTest = function (binName, testName, opts) {
           args.map(arg => `"${arg}"`).join(" ") +
           ": " +
           err.message +
-          `\nstdout: ${stdout}\nstderr: ${stderr}`;
+          `\n\nstdout: ${stdout}\n\nstderr: ${stderr}`;
       }
 
       callback(err);

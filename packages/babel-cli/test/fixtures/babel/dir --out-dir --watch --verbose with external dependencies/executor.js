@@ -30,7 +30,7 @@ run.next();
 const batchedStrings = [];
 let batchId = 0;
 
-process.stdin.on("data", async function listener(chunk) {
+process.stdin.on("data", function listener(chunk) {
   const str = String(chunk).trim();
   if (!str) return;
 
@@ -50,10 +50,11 @@ process.stdin.on("data", async function listener(chunk) {
 
     console.log(str);
   }
-
-  if ((await run.next(str)).done) {
-    process.exit(0);
-  }
+  run.next(str).then(res => {
+    if (res.done) {
+      process.exit(0);
+    }
+  })
 });
 
 function logFile(file) {
