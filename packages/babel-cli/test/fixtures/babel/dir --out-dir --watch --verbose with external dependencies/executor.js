@@ -31,29 +31,31 @@ const batchedStrings = [];
 let batchId = 0;
 
 process.stdin.on("data", function listener(chunk) {
-  const str = String(chunk).trim();
-  if (!str) return;
+  process.nextTick(function () {
+    const str = String(chunk).trim();
+    if (!str) return;
 
-  if (str.startsWith("src")) {
-    batchedStrings.push(str);
-  } else {
-    // "src/index.js -> lib/index.js"-like strings don't always come in order,
-    // so we need to collect and sort them before logging.
-    if (batchedStrings.length > 0) {
-      batchedStrings.sort();
-      for (const str of batchedStrings) {
-        console.log(`BATCHED(${batchId})`, str);
+    if (str.startsWith("src")) {
+      batchedStrings.push(str);
+    } else {
+      // "src/index.js -> lib/index.js"-like strings don't always come in order,
+      // so we need to collect and sort them before logging.
+      if (batchedStrings.length > 0) {
+        batchedStrings.sort();
+        for (const str of batchedStrings) {
+          console.log(`BATCHED(${batchId})`, str);
+        }
+        batchId++;
+        batchedStrings.length = 0;
       }
-      batchId++;
-      batchedStrings.length = 0;
-    }
 
-    console.log(str);
-  }
-  run.next(str).then(res => {
-    if (res.done) {
-      process.exit(0);
+      console.log(str);
     }
+    run.next(str).then(res => {
+      if (res.done) {
+        process.exit(0);
+      }
+    })
   })
 });
 
