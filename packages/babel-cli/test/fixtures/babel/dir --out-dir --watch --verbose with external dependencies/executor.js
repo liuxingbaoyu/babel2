@@ -31,16 +31,23 @@ const batchedStrings = [];
 let batchId = 0;
 
 process.stdin.on("data", function listener(chunk) {
-  process.nextTick(function () {
-    const str = String(chunk).trim();
-    if (!str) return;
+  const str = String(chunk).trim();
+  if (!str) return;
 
+  process.nextTick(function () {
     if (str.startsWith("src")) {
       batchedStrings.push(str);
     } else {
       // "src/index.js -> lib/index.js"-like strings don't always come in order,
       // so we need to collect and sort them before logging.
       if (batchedStrings.length > 0) {
+        if (batchedStrings.length == 1) {
+          console.error(JSON.stringify(batchedStrings));
+          console.error(JSON.stringify(str));
+          console.error(chunk.toString("hex"));
+          process.exit(1);
+        }
+
         batchedStrings.sort();
         for (const str of batchedStrings) {
           console.log(`BATCHED(${batchId})`, str);
