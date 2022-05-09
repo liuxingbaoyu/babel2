@@ -1,4 +1,5 @@
 const path = require("path");
+const { setTimeout } = require("timers/promises");
 
 const ACTIONS = {
   GET_VERSION: "GET_VERSION",
@@ -72,7 +73,7 @@ exports.WorkerClient = class WorkerClient extends Client {
           subChannel.port2,
         ))
       }
-      this.#worker.prependOnceListener("close", onClose);
+      subChannel.port2.prependOnceListener("close", onClose);
 
       this.#worker.postMessage(
         { signal: this.#signal, port: subChannel.port1, action, payload },
@@ -80,10 +81,19 @@ exports.WorkerClient = class WorkerClient extends Client {
       );
 
       Atomics.wait(this.#signal, 0, 0);
-      this.#worker.removeListener("close", onClose);
-      const { message } = WorkerClient.#worker_threads.receiveMessageOnPort(
+      subChannel.port2.removeListener("close", onClose);
+      const obj = WorkerClient.#worker_threads.receiveMessageOnPort(
         subChannel.port2,
       );
+      if (!obj) {
+        setTimeout(() => {
+          throw WorkerClient.#worker_threads.receiveMessageOnPort(
+            subChannel.port2,
+          );
+        },3000)
+        return;
+      }
+      const { message } = obj;
 
       if (message.error) throw Object.assign(message.error, message.errorData);
       else return message.result;
