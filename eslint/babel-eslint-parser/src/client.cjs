@@ -73,7 +73,8 @@ exports.WorkerClient = class WorkerClient extends Client {
           subChannel.port2,
         ))
       }
-      subChannel.port2.prependOnceListener("close", onClose);
+      this.#worker.prependOnceListener("close", onClose);
+      this.#worker.prependOnceListener('messageerror', (err) => { throw err;});
 
       this.#worker.postMessage(
         { signal: this.#signal, port: subChannel.port1, action, payload },
@@ -81,7 +82,7 @@ exports.WorkerClient = class WorkerClient extends Client {
       );
 
       Atomics.wait(this.#signal, 0, 0);
-      subChannel.port2.removeListener("close", onClose);
+      this.#worker.removeListener("close", onClose);
       const obj = WorkerClient.#worker_threads.receiveMessageOnPort(
         subChannel.port2,
       );
