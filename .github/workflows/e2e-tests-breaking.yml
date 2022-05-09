@@ -56,3 +56,27 @@ jobs:
         run: ./scripts/integration-tests/e2e-${{ matrix.project }}.sh
         env:
           BABEL_8_BREAKING: true
+
+  e2e-tests-babel:
+    name: Test
+    needs: e2e-publish
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [16, 14, 12, 10, 8, 6]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Use Node.js latest
+        uses: actions/setup-node@v3
+        with:
+          node-version: "*"
+      - uses: actions/download-artifact@v3
+        with:
+          name: verdaccio-workspace
+          path: /tmp/verdaccio-workspace
+      - name: Test
+        run: ./scripts/integration-tests/e2e-babel.sh
+        env:
+          BABEL_8_BREAKING: true
