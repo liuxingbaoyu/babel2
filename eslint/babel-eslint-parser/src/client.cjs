@@ -86,7 +86,7 @@ function sleep(ms) {
     "setTimeout(function(){}," + ms + ")",
   ]);
 }
-  if(!obj){
+/*   if(!obj){
 sleep(2000);
 obj = WorkerClient.#worker_threads.receiveMessageOnPort(
         subChannel.port2,
@@ -94,7 +94,7 @@ obj = WorkerClient.#worker_threads.receiveMessageOnPort(
   if(!obj){
 throw "!obj"
   }
-  }
+  } */
 
       const { message } = obj;
 
