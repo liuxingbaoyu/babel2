@@ -67,33 +67,15 @@ exports.WorkerClient = class WorkerClient extends Client {
       this.#signal[0] = 0;
       const subChannel = new WorkerClient.#worker_threads.MessageChannel();
 
-      function onClose() {
-        throw "onClose: " + Object.keys(WorkerClient.#worker_threads.receiveMessageOnPort(
-          subChannel.port2,
-        ))
-      }
-      //this.#worker.prependOnceListener("close", onClose);
-      //this.#worker.prependOnceListener('messageerror', (err) => { throw "messageerror: "+JSON.stringify(err);});
-
       this.#worker.postMessage(
         { signal: this.#signal, port: subChannel.port1, action, payload },
         [subChannel.port1],
       );
 
       Atomics.wait(this.#signal, 0, 0);
-      //this.#worker.removeListener("close", onClose);
-      const obj = WorkerClient.#worker_threads.receiveMessageOnPort(
+      const { message } = WorkerClient.#worker_threads.receiveMessageOnPort(
         subChannel.port2,
       );
-      if (!obj) {
-        setTimeout(() => {
-          throw "setTimeout:"+WorkerClient.#worker_threads.receiveMessageOnPort(
-            subChannel.port2,
-          );
-        },3000)
-        return;
-      }
-      const { message } = obj;
 
       if (message.error) throw Object.assign(message.error, message.errorData);
       else return message.result;
