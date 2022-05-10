@@ -74,7 +74,7 @@ exports.WorkerClient = class WorkerClient extends Client {
         ))
       }
       this.#worker.prependOnceListener("close", onClose);
-      this.#worker.prependOnceListener('messageerror', (err) => { throw err;});
+      this.#worker.prependOnceListener('messageerror', (err) => { throw "messageerror: "+JSON.stringify(err);});
 
       this.#worker.postMessage(
         { signal: this.#signal, port: subChannel.port1, action, payload },
