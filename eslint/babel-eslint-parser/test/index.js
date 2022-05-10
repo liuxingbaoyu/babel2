@@ -4,6 +4,7 @@ import unpad from "dedent";
 import { fileURLToPath } from "url";
 import { createRequire } from "module";
 import { parseForESLint } from "../lib/index.cjs";
+import * as worker_threads from "worker_threads";
 
 function parseForESLint8(code, options) {
   const { ESLINT_VERSION_FOR_BABEL } = process.env;
@@ -58,6 +59,27 @@ function deeplyRemoveProperties(obj, props) {
 }
 
 describe("Babel and Espree", () => {
+  test("ttttttttttt", () => {
+    for (let i = 0; i < 60; i++) {
+      //console.log(i);
+      const worker = new worker_threads.Worker(path.join(dirname, "1.cjs"));
+      const signal = new Int32Array(new SharedArrayBuffer(4));
+      signal[0] = 0;
+
+      const chan = new worker_threads.MessageChannel();
+      worker.postMessage({ signal: signal, port: chan.port1 }, [chan.port1]);
+      Atomics.wait(signal, 0, 0);
+      const obj = worker_threads.receiveMessageOnPort(chan.port2);
+      if (!obj) {
+        throw "err";
+      }
+
+      //worker.terminate()
+      worker.unref();
+    }
+    expect(1).toBe(1);
+  });
+
   let espree7, espree8;
 
   const espreeOptions = {

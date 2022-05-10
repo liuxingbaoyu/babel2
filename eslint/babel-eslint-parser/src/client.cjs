@@ -68,7 +68,9 @@ exports.WorkerClient = class WorkerClient extends Client {
       this.#signal[0] = 0;
       const subChannel = new WorkerClient.#worker_threads.MessageChannel();
 
-      subChannel.port2.on('messageerror', (err) => { throw "messageerror: "+JSON.stringify(err);});
+      subChannel.port2.on("messageerror", err => {
+        throw "messageerror: " + JSON.stringify(err);
+      });
 
       this.#worker.postMessage(
         { signal: this.#signal, port: subChannel.port1, action, payload },
@@ -76,17 +78,17 @@ exports.WorkerClient = class WorkerClient extends Client {
       );
 
       Atomics.wait(this.#signal, 0, 0);
-      let obj = WorkerClient.#worker_threads.receiveMessageOnPort(
+      const obj = WorkerClient.#worker_threads.receiveMessageOnPort(
         subChannel.port2,
       );
 
-function sleep(ms) {
-  child_process.spawnSync(process.execPath, [
-    "-e",
-    "setTimeout(function(){}," + ms + ")",
-  ]);
-}
-/*   if(!obj){
+      function sleep(ms) {
+        child_process.spawnSync(process.execPath, [
+          "-e",
+          "setTimeout(function(){}," + ms + ")",
+        ]);
+      }
+      /*   if(!obj){
 sleep(2000);
 obj = WorkerClient.#worker_threads.receiveMessageOnPort(
         subChannel.port2,

@@ -22,10 +22,9 @@ parentPort.addListener("message", async ({ signal, port, action, payload }) => {
     });
   } finally {
     port.close();
-    setTimeout(()=>{
+    setTimeout(() => {
       Atomics.store(signal, 0, 1);
       Atomics.notify(signal, 0);
-    },0)
-
+    }, 0);
   }
 });
