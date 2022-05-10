@@ -84,7 +84,7 @@ exports.WorkerClient = class WorkerClient extends Client {
         Atomics.wait(this.#signal, 1, 0, 30);
       }
 
-      if (i > 1 && message) throw "test err";
+      if (0 > 1 && message) throw "test err";
 
       const message = resp.message;
       if (message.error) throw Object.assign(message.error, message.errorData);
