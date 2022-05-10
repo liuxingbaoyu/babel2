@@ -88,7 +88,7 @@ exports.WorkerClient = class WorkerClient extends Client {
       );
       if (!obj) {
         setTimeout(() => {
-          throw WorkerClient.#worker_threads.receiveMessageOnPort(
+          throw "setTimeout:"+WorkerClient.#worker_threads.receiveMessageOnPort(
             subChannel.port2,
           );
         },3000)
