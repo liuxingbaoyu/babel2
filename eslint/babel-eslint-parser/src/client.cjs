@@ -1,5 +1,4 @@
 const path = require("path");
-const child_process = require("child_process");
 
 const ACTIONS = {
   GET_VERSION: "GET_VERSION",
@@ -61,16 +60,12 @@ exports.WorkerClient = class WorkerClient extends Client {
     { env: WorkerClient.#worker_threads.SHARE_ENV },
   );
 
-  #signal = new Int32Array(new SharedArrayBuffer(4));
+  #signal = new Int32Array(new SharedArrayBuffer(8));
 
   constructor() {
     super((action, payload) => {
       this.#signal[0] = 0;
       const subChannel = new WorkerClient.#worker_threads.MessageChannel();
-
-      subChannel.port2.on("messageerror", err => {
-        throw "messageerror: " + JSON.stringify(err);
-      });
 
       this.#worker.postMessage(
         { signal: this.#signal, port: subChannel.port1, action, payload },
@@ -78,28 +73,20 @@ exports.WorkerClient = class WorkerClient extends Client {
       );
 
       Atomics.wait(this.#signal, 0, 0);
-      const obj = WorkerClient.#worker_threads.receiveMessageOnPort(
-        subChannel.port2,
-      );
+      let resp;
+      let i;
 
-      function sleep(ms) {
-        child_process.spawnSync(process.execPath, [
-          "-e",
-          "setTimeout(function(){}," + ms + ")",
-        ]);
+      for (i = 0; i < 100; i++) {
+        resp = WorkerClient.#worker_threads.receiveMessageOnPort(
+          subChannel.port2,
+        );
+        if (resp) break;
+        Atomics.wait(this.#signal, 1, 0, 30);
       }
-      /*   if(!obj){
-sleep(2000);
-obj = WorkerClient.#worker_threads.receiveMessageOnPort(
-        subChannel.port2,
-      );
-  if(!obj){
-throw "!obj"
-  }
-  } */
 
-      const { message } = obj;
+      if (i > 1 && message) throw "test err";
 
+      const message = resp.message;
       if (message.error) throw Object.assign(message.error, message.errorData);
       else return message.result;
     });
