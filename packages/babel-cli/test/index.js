@@ -1,4 +1,4 @@
-import readdir from "fs-readdir-recursive";
+/* import readdir from "fs-readdir-recursive";
 import * as helper from "@babel/helper-fixtures";
 import rimraf from "rimraf";
 import child from "child_process";
@@ -336,3 +336,4 @@ describe("util.js", () => {
     });
   });
 });
+ */

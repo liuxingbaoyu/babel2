@@ -21,7 +21,7 @@ parentPort.addListener("message", async ({ signal, port, action, payload }) => {
       error: new Error("Cannot serialize worker response"),
     });
   } finally {
-    //port.close();
+    port.close();
     Atomics.store(signal, 0, 1);
     Atomics.notify(signal, 0);
   }

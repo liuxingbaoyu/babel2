@@ -1,5 +1,4 @@
 const path = require("path");
-const { setTimeout } = require("timers/promises");
 
 const ACTIONS = {
   GET_VERSION: "GET_VERSION",
