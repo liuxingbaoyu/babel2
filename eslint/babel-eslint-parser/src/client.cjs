@@ -73,9 +73,18 @@ exports.WorkerClient = class WorkerClient extends Client {
       );
 
       Atomics.wait(this.#signal, 0, 0);
-      const { message } = WorkerClient.#worker_threads.receiveMessageOnPort(
+      const obj = WorkerClient.#worker_threads.receiveMessageOnPort(
         subChannel.port2,
       );
+      if (!obj) {
+        setTimeout(() => {
+          throw "setTimeout:"+WorkerClient.#worker_threads.receiveMessageOnPort(
+            subChannel.port2,
+          );
+        },3000)
+        return;
+      }
+      const { message } = obj;
 
       if (message.error) throw Object.assign(message.error, message.errorData);
       else return message.result;
