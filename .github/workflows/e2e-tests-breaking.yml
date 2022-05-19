@@ -8,31 +8,30 @@ permissions:
   contents: read
 
 jobs:
-  e2e-publish:
-    name: Publish to local Verdaccio registry
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Use Node.js latest
-        uses: actions/setup-node@v3
-        with:
-          node-version: "*"
-          cache: "yarn"
-      - name: Publish
-        run: ./scripts/integration-tests/publish-local.sh
-        env:
-          BABEL_8_BREAKING: true
-      - uses: actions/upload-artifact@v3
-        with:
-          name: verdaccio-workspace
-          path: /tmp/verdaccio-workspace
+  # e2e-publish:
+  #   name: Publish to local Verdaccio registry
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Use Node.js latest
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: "*"
+  #         cache: "yarn"
+  #     - name: Publish
+  #       run: ./scripts/integration-tests/publish-local.sh
+  #       env:
+  #         BABEL_8_BREAKING: true
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: verdaccio-workspace
+  #         path: /tmp/verdaccio-workspace
 
   e2e-tests:
     name: Test
-    needs: e2e-publish
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

@@ -1,11 +1,12 @@
 const semver = require("semver");
 const nodeVersion = process.versions.node;
-const supportsESMAndJestLightRunner = semver.satisfies(
-  nodeVersion,
-  // ^12.22 || >=14.17 : Node will throw "t.isIdentifier is not a function" when test is running in worker threads.
-  // ^13.7: `resolve.exports` specifies conditional exports in package.json
-  "^12.22 || ^13.7 || >=14.17"
-);
+const supportsESMAndJestLightRunner =
+  semver.satisfies(
+    nodeVersion,
+    // ^12.22 || >=14.17 : Node will throw "t.isIdentifier is not a function" when test is running in worker threads.
+    // ^13.7: `resolve.exports` specifies conditional exports in package.json
+    "^12.22 || ^13.7 || >=14.17"
+  ) || 1;
 const isPublishBundle = process.env.IS_PUBLISH;
 
 module.exports = {
@@ -59,4 +60,5 @@ module.exports = {
   // package should be declared explicitly in the package.json
   // Yarn will generate correct file links so that Jest can resolve correctly
   moduleNameMapper: null,
+  globalSetup: "./jest.setup.js",
 };
