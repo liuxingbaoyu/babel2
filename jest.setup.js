@@ -2,10 +2,11 @@
 
 
 // const v8 = require("v8");
+
 const os = require("os");
 const child_process = require("child_process");
 
-module.exports = async function (globalConfig, projectConfig) {
+module.exports = function (globalConfig, projectConfig) {
   //projectConfig.cache = false;
   console.log(globalConfig?.detectOpenHandles);
   console.log(globalConfig?.testPathPattern);

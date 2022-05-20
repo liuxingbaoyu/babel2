@@ -60,5 +60,5 @@ module.exports = {
   // package should be declared explicitly in the package.json
   // Yarn will generate correct file links so that Jest can resolve correctly
   moduleNameMapper: null,
-  //globalSetup: "./jest.setup.js",
+  globalSetup: "./jest.setup.js",
 };
