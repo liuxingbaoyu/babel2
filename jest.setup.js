@@ -7,9 +7,9 @@ const child_process = require("child_process");
 
 module.exports = async function (globalConfig, projectConfig) {
   //projectConfig.cache = false;
-  console.log(globalConfig.detectOpenHandles);
-  console.log(globalConfig.testPathPattern);
-  console.log(projectConfig.cache);
+  console.log(globalConfig?.detectOpenHandles);
+  console.log(globalConfig?.testPathPattern);
+  console.log(projectConfig?.cache);
 
 
   return;
