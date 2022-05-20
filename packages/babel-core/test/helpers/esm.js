@@ -13,7 +13,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const nodeSupportsESM = parseInt(process.versions.node) >= 12;
 const isWindows = process.platform === "win32";
 
-export const supportsESM = nodeSupportsESM && !isWindows && 0;
+export const supportsESM = nodeSupportsESM && !isWindows;
 
 export const isMJS = file => path.extname(file) === ".mjs";
 
