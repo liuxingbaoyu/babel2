@@ -24,7 +24,7 @@ function handle_exit {
 }
 
 # Exit the script with a helpful error message when any error is encountered
-trap 'set +x; handle_error $LINENO $BASH_COMMAND' ERR
+#trap 'set +x; handle_error $LINENO $BASH_COMMAND' ERR
 
 # Cleanup before exit on any termination signal
 trap 'set +x; handle_exit' SIGQUIT SIGTERM SIGINT SIGKILL SIGHUP
