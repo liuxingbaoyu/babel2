@@ -16,7 +16,7 @@ function createInput(length) {
 }
 
 function benchCases(name, implementation, options) {
-  for (const length of [1, 2]) {
+  for (const length of [1, 32]) {
     const input = createInput(length);
     suite.add(`${name} ${length} jquery 3.6`, () => {
       implementation(input, options);
