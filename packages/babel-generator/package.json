@@ -27,7 +27,7 @@
     "@babel/helper-fixtures": "workspace:^",
     "@babel/parser": "workspace:^",
     "@jridgewell/trace-mapping": "^0.3.8",
-    "@types/jsesc": "^2.5.0",
+    "@types/jsesc": "^3.0.1",
     "charcodes": "^0.2.0"
   },
   "engines": {
