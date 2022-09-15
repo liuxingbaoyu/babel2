@@ -272,7 +272,7 @@ jobs:
             !**/node_modules/**
 
   test-babel-8-breaking:
-    name: Test Babel 8 breaking changes on Node.js
+    name: Test Babel 8 breaking changes on
     needs: build-babel8
     strategy:
       matrix:
@@ -287,8 +287,7 @@ jobs:
           node-version: "14.17" # Node.js 14.17 is the first LTS supported by Babel 8
           cache: "yarn"
       - name: Install
-        run: |
-          yarn install
+        run: yarn install
       - uses: actions/download-artifact@v3
         with:
           name: babel8-test-artifact
@@ -298,6 +297,8 @@ jobs:
         # Hack: --color has supports-color@5 returned true for GitHub CI
         # Remove once `chalk` is bumped to 4.0.
         run: |
+          yarn condition materialize BABEL_8_BREAKING --true
+          yarn
           yarn jest --ci --color
           yarn test:esm
         env:
