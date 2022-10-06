@@ -15,7 +15,8 @@
     "test:esm": "node test/esm/index.js",
     "test:runtime:generate-absolute-runtime": "node test/runtime-integration/generate-absolute-runtime.cjs",
     "test:runtime:bundlers": "node test/runtime-integration/bundlers.cjs",
-    "test:runtime:node": "node test/runtime-integration/node.cjs"
+    "test:runtime:node": "node test/runtime-integration/node.cjs",
+    "compressed-size": "make prepublish-build"
   },
   "packageManager": "yarn@3.1.1",
   "devDependencies": {
