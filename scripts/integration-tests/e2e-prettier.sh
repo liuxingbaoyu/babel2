@@ -37,7 +37,10 @@ yarn install --no-immutable
 yarn info
 
 # Test typings for @babel/parser
-yarn lint:typecheck
+if [ -z "$BABEL_8_BREAKING" ]
+then
+  yarn lint:typecheck
+fi
 
 # https://github.com/babel/babel/pull/14892#issuecomment-1233180626
 echo "export default () => () => {}" > src/main/create-print-pre-check-function.js
