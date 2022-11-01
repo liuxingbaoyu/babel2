@@ -42,11 +42,6 @@ jobs:
       fail-fast: false
       matrix:
         project:
-          - babel
-          - create-react-app
-          - vue-cli
-          - jest
-          - react-native
           - prettier
     steps:
       - name: Checkout code
@@ -63,3 +58,6 @@ jobs:
         run: ./scripts/integration-tests/e2e-${{ matrix.project }}.sh
         env:
           BABEL_8_BREAKING: true
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
