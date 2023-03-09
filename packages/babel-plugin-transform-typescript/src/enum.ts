@@ -44,7 +44,7 @@ export default function transpileEnum(
         init = t.logicalExpression("||", t.cloneNode(fill.ID), init);
       }
       const enumIIFE = buildEnumWrapper({ ...fill, INIT: init });
-      if (!isSeen && isPure) annotateAsPure(enumIIFE);
+      if (isPure) annotateAsPure(enumIIFE);
 
       if (isSeen) {
         const toReplace = parentPath.isExportDeclaration() ? parentPath : path;
