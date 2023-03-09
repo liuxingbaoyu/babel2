@@ -5,7 +5,7 @@ var BB = /*#__PURE__*/function (BB) {
   BB[BB["K"] = 0] = "K";
   return BB;
 }(BB || {});
-BB = /*#__PURE__*/function (BB) {
+BB = function (BB) {
   BB["L"] = "LL";
   return BB;
 }(BB || {});
