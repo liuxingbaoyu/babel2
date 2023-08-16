@@ -17,18 +17,18 @@ function benchCases(name, implementation, options) {
   }
 }
 
-benchCases("baseline", baseline.default, {
-  enter() {},
-});
-benchCases("baseline mutating context", baseline.default, {
-  enter(path) {
-    path.context = undefined;
-  },
-});
 benchCases("current", current.default, {
   enter() {},
 });
 benchCases("current mutating context", current.default, {
+  enter(path) {
+    path.context = undefined;
+  },
+});
+benchCases("baseline", baseline.default, {
+  enter() {},
+});
+benchCases("baseline mutating context", baseline.default, {
   enter(path) {
     path.context = undefined;
   },
