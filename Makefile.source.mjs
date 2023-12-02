@@ -340,23 +340,10 @@ target["lint"] = function () {
   );
 };
 
-target["fix"] = function () {
-  target["fix-json"]();
-  target["fix-js"]();
-};
+target["fix"] = target["fix-js"];
 
 target["fix-js"] = function () {
   yarn([...EslintArgs, "--fix"]);
-};
-
-target["fix-json"] = function () {
-  yarn([
-    "prettier",
-    `{${SOURCES.join(",")}}/*/test/fixtures/**/options.json`,
-    "--write",
-    "--loglevel",
-    "warn",
-  ]);
 };
 
 target["watch"] = function () {
