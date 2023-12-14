@@ -280,10 +280,27 @@ export function buildNamespaceInitStatements(
     );
   }
   if (sourceMetadata.reexportAll) {
+    let exportNameListName;
+    if (metadata.implicitAssignmentExports === undefined) {
+      // __esModule, default
+      if (metadata.exportNameList.length > 2) {
+        exportNameListName =
+          metadata.programPath.scope.generateUidIdentifier("exportNames");
+        statements.push(
+          variableDeclaration("var", [
+            variableDeclarator(
+              exportNameListName,
+              valueToNode(metadata.exportNameList),
+            ),
+          ]),
+        );
+      }
+    }
     const statement = buildNamespaceReexport(
       metadata,
       cloneNode(srcNamespace),
       constantReexports,
+      exportNameListName,
       buildExportStar,
     );
     statement.loc = sourceMetadata.reexportAll.loc;
@@ -404,25 +421,12 @@ function buildNamespaceReexport(
   metadata: ModuleMetadata,
   namespace: t.Expression,
   constantReexports: boolean,
+  exportNameListName?: t.Identifier,
   buildExportStar?: (body: t.Statement[]) => t.Statement,
 ) {
   const { programPath, exportNameList } = metadata;
 
   if (metadata.implicitAssignmentExports === undefined) {
-    let exportNameListName;
-    if (metadata.exportNameList.length > 2) {
-      exportNameListName =
-        programPath.scope.generateUidIdentifier("exportNames");
-      programPath.unshiftContainer(
-        "body",
-        variableDeclaration("var", [
-          variableDeclarator(
-            exportNameListName,
-            valueToNode(metadata.exportNameList),
-          ),
-        ]),
-      );
-    }
     return (
       constantReexports
         ? template.statement`
@@ -460,7 +464,7 @@ function buildNamespaceReexport(
       VERIFY_NAME_LIST: exportNameListName
         ? template`
             if (Object.prototype.hasOwnProperty.call(EXPORTS_LIST, key)) return;
-          `({ EXPORTS_LIST: exportNameListName })
+          `({ EXPORTS_LIST: t.cloneNode(exportNameListName) })
         : null,
     });
   }
