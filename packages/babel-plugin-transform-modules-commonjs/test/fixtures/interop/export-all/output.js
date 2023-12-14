@@ -3,20 +3,24 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var _exportNames = {};
 exports.default = void 0;
-var _react = babelHelpers.interopRequireWildcard(require("react"));
-Object.keys(_react).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _react[key]) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _react[key];
+_interop = 1;
+var _react = __exportStar(require("react"));
+var _interop;
+function __exportStar(mod) {
+  mod = _interop == 1 ? babelHelpers.interopRequireWildcard(mod) : mod;
+  Object.keys(mod).forEach(function (k) {
+    if (["default", "__esModule"].indexOf(k) < 0 && !(k in exports && exports[k] === mod[k])) {
+      Object.defineProperty(exports, k, {
+        get: function () {
+          return mod[k];
+        },
+        enumerable: true
+      });
     }
   });
-});
+  return mod;
+}
 // The fact that this exports both a normal default, and all of the names via
 // re-export is an edge case that is important not to miss. See
 // https://github.com/babel/babel/issues/8306 as an example.

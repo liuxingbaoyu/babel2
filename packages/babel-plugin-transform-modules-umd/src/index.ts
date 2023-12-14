@@ -179,6 +179,7 @@ export default declare((api, options: Options) => {
           const { meta, headers } = rewriteModuleStatementsAndPrepareHeader(
             path,
             {
+              implicitAssignmentExports: true,
               constantReexports,
               enumerableModuleMeta,
               strict,
