@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["some exports"] = void 0;
-var _foo = require("foo");
-_export("some exports", _foo, "some imports");
+exports.bar = void 0;
+var _index = require("./index.js");
+_export("bar", _index);
 function _export(name, mod, name2) {
   Object.defineProperty(exports, name, {
     enumerable: true,

@@ -22,7 +22,7 @@
     Object.defineProperty(_exports, name, {
       enumerable: true,
       get: function () {
-        return mod[name2 || name];
+        return mod[name2 == null ? name : name2];
       }
     });
   }

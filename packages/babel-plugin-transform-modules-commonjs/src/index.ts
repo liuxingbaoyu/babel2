@@ -276,25 +276,26 @@ export default declare((api, options: Options) => {
                 } as const
               )[metadata.interop];
 
-              if (lastInteropType == null && interopType !== 0) {
-                interopTypeId = path.scope.generateUidIdentifier("interop");
-                path.scope.push({
-                  id: interopTypeId,
-                  kind: "var",
-                });
-              }
-
-              if (lastInteropType !== interopType && interopTypeId) {
-                lastInteropType = interopType;
-                headers.push(
-                  t.expressionStatement(
-                    t.assignmentExpression(
-                      "=",
-                      t.cloneNode(interopTypeId),
-                      t.numericLiteral(interopType),
+              if (lastInteropType !== interopType) {
+                if (lastInteropType != null) {
+                  if (!interopTypeId) {
+                    interopTypeId = path.scope.generateUidIdentifier("interop");
+                    path.scope.push({
+                      id: interopTypeId,
+                      kind: "var",
+                    });
+                  }
+                  headers.push(
+                    t.expressionStatement(
+                      t.assignmentExpression(
+                        "=",
+                        t.cloneNode(interopTypeId),
+                        t.numericLiteral(interopType),
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
+                lastInteropType = interopType;
               }
 
               headers.push(
@@ -394,23 +395,32 @@ export default declare((api, options: Options) => {
             let cond: t.Identifier | t.ConditionalExpression =
               t.identifier("mod");
 
-            interopTypes.forEach((call, type) => {
-              if (!interopTypeId) return;
-              cond = t.conditionalExpression(
-                t.binaryExpression(
-                  "==",
-                  t.cloneNode(interopTypeId),
-                  t.numericLiteral(type),
-                ),
-                call,
-                cond,
-              );
-            });
+            if (interopTypeId) {
+              interopTypes.forEach((call, type) => {
+                cond = t.conditionalExpression(
+                  t.binaryExpression(
+                    "==",
+                    t.cloneNode(interopTypeId),
+                    t.numericLiteral(type),
+                  ),
+                  call,
+                  cond,
+                );
+              });
 
-            if (!t.isIdentifier(cond)) {
               exportStarFnBody.body.push(
                 t.expressionStatement(
                   t.assignmentExpression("=", t.identifier("mod"), cond),
+                ),
+              );
+            } else if (lastInteropType) {
+              exportStarFnBody.body.push(
+                t.expressionStatement(
+                  t.assignmentExpression(
+                    "=",
+                    t.identifier("mod"),
+                    interopTypes.get(lastInteropType),
+                  ),
                 ),
               );
             }

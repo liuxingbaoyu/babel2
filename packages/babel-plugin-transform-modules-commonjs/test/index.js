@@ -1,7 +1,15 @@
 import runner from "@babel/helper-plugin-test-runner";
-import { readFileSync } from "fs";
+import {
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "fs";
 import path from "path";
 import { commonJS, describeGte } from "$repo-utils";
+import { transformFileSync } from "@babel/core";
+import transformModulesCommonjs from "../lib/index.js";
 
 const { __dirname, require } = commonJS(import.meta.url);
 
@@ -93,4 +101,25 @@ describeGte("10.0.0")("compat", () => {
       }
     `);
   });
+});
+
+const execFixtures = path.join(__dirname, "./fixtures/.exec/");
+readdirSync(execFixtures).forEach(testName => {
+  if (testName.includes(".")) return;
+  const inputDir = path.join(execFixtures, testName, "input");
+  const outputPath = path.join(execFixtures, testName, "output");
+  try {
+    rmSync(outputPath, { recursive: true });
+  } catch (error) {}
+  mkdirSync(outputPath);
+
+  readdirSync(inputDir).forEach(file => {
+    const result = transformFileSync(path.join(inputDir, file), {
+      plugins: [transformModulesCommonjs],
+      configFile: false,
+      babelrc: false,
+    });
+    writeFileSync(path.join(outputPath, file), result.code);
+  });
+  require(path.join(outputPath, "index.js"));
 });

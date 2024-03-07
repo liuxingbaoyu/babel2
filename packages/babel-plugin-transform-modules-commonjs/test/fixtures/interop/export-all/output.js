@@ -4,11 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-_interop = 1;
 var _react = __exportStar(require("react"));
-var _interop;
 function __exportStar(mod) {
-  mod = _interop == 1 ? babelHelpers.interopRequireWildcard(mod) : mod;
+  mod = babelHelpers.interopRequireWildcard(mod);
   Object.keys(mod).forEach(function (k) {
     if (["default", "__esModule"].indexOf(k) < 0 && !(k in exports && exports[k] === mod[k])) {
       Object.defineProperty(exports, k, {

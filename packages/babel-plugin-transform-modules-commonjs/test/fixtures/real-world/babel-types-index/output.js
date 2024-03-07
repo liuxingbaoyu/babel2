@@ -149,7 +149,7 @@ function _export(name, mod, name2) {
   Object.defineProperty(exports, name, {
     enumerable: true,
     get: function () {
-      return mod[name2 || name];
+      return mod[name2 == null ? name : name2];
     }
   });
 }
