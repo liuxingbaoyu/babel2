@@ -2979,6 +2979,7 @@ __metadata:
     "@babel/helper-plugin-utils": "workspace:^"
     "@babel/helper-simple-access": "workspace:^"
     "@babel/plugin-external-helpers": "workspace:^"
+    cjs-module-lexer: "npm:^1.2.3"
   peerDependencies:
     "@babel/core": ^7.0.0-0
   languageName: unknown
@@ -7780,10 +7781,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cjs-module-lexer@npm:^1.0.0":
-  version: 1.2.1
-  resolution: "cjs-module-lexer@npm:1.2.1"
-  checksum: 10/52e82bd7be07d37a04a175c9cbd730890bcf5dd1262043d88f38e9885b388fdd29ede830b04346045e03fb987c1096e38487497eeab5128edce9f43e2ce3ced6
+"cjs-module-lexer@npm:^1.0.0, cjs-module-lexer@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "cjs-module-lexer@npm:1.2.3"
+  checksum: 10/f96a5118b0a012627a2b1c13bd2fcb92509778422aaa825c5da72300d6dcadfb47134dd2e9d97dfa31acd674891dd91642742772d19a09a8adc3e56bd2f5928c
   languageName: node
   linkType: hard
 

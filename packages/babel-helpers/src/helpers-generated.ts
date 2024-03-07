@@ -123,10 +123,10 @@ export default Object.freeze({
     "7.23.0",
     "export default function _importDeferProxy(e){var t=null,constValue=function(e){return function(){return e}},proxy=function(r){return function(n,o,f){return null===t&&(t=e()),r(t,o,f)}};return new Proxy({},{defineProperty:constValue(!1),deleteProperty:constValue(!1),get:proxy(Reflect.get),getOwnPropertyDescriptor:proxy(Reflect.getOwnPropertyDescriptor),getPrototypeOf:constValue(null),isExtensible:constValue(!1),has:proxy(Reflect.has),ownKeys:proxy(Reflect.ownKeys),preventExtensions:constValue(!0),set:constValue(!1),setPrototypeOf:constValue(!1)})}",
   ),
-  // size: 693, gzip size: 361
+  // size: 523, gzip size: 320
   interopRequireWildcard: helper(
-    "7.14.0",
-    'function _getRequireWildcardCache(e){if("function"!=typeof WeakMap)return null;var r=new WeakMap,t=new WeakMap;return(_getRequireWildcardCache=function(e){return e?t:r})(e)}export default function _interopRequireWildcard(e,r){if(!r&&e&&e.__esModule)return e;if(null===e||"object"!=typeof e&&"function"!=typeof e)return{default:e};var t=_getRequireWildcardCache(r);if(t&&t.has(e))return t.get(e);var n={__proto__:null},a=Object.defineProperty&&Object.getOwnPropertyDescriptor;for(var u in e)if("default"!==u&&Object.prototype.hasOwnProperty.call(e,u)){var i=a?Object.getOwnPropertyDescriptor(e,u):null;i&&(i.get||i.set)?Object.defineProperty(n,u,i):n[u]=e[u]}return n.default=e,t&&t.set(e,n),n}',
+    "7.24.1",
+    'export default function _interopRequireWildcard(e,t){if("function"==typeof WeakMap)var r=new WeakMap,n=new WeakMap;return(_interopRequireWildcard=function(e,t){if(!t&&e&&e.__esModule)return e;var o,i=t?n:r,u={__proto__:null,default:e},a=typeof e;if(null==e||"object"!==a&&"function"!==a)return u;if(i){if(i.has(e))return i.get(e);i.set(e,u)}for(const t in e)"default"!==t&&{}.hasOwnProperty.call(e,t)&&((o=(a=Object.getOwnPropertyDescriptor)&&a(e,t))&&(o.get||o.set)?Object.defineProperty(u,t,o):u[t]=e[t]);return u})(e,t)}',
   ),
   // size: 208, gzip size: 154
   isNativeReflectConstruct: helper(
