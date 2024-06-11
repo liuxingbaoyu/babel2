@@ -911,17 +911,11 @@ function createPrivateBrandCheckClosure(brandName: t.PrivateName) {
 }
 
 function usesPrivateField(expression: t.Node) {
-  try {
-    t.traverseFast(expression, node => {
-      if (t.isPrivateName(node)) {
-        // TODO: Add early return support to t.traverseFast
-        throw null;
-      }
-    });
-    return false;
-  } catch {
-    return true;
-  }
+  return t.traverseFast(expression, node => {
+    if (t.isPrivateName(node)) {
+      return "stop";
+    }
+  });
 }
 
 /**
@@ -1065,25 +1059,19 @@ function transformClass(
   // context or the given identifier name or contains yield or await expression.
   // `true` means "maybe" and `false` means "no".
   const usesFunctionContextOrYieldAwait = (decorator: t.Decorator) => {
-    try {
-      t.traverseFast(decorator, node => {
-        if (
-          t.isThisExpression(node) ||
-          t.isSuper(node) ||
-          t.isYieldExpression(node) ||
-          t.isAwaitExpression(node) ||
-          t.isIdentifier(node, { name: "arguments" }) ||
-          (classIdName && t.isIdentifier(node, { name: classIdName })) ||
-          (t.isMetaProperty(node) && node.meta.name !== "import")
-        ) {
-          // TODO: Add early return support to t.traverseFast
-          throw null;
-        }
-      });
-      return false;
-    } catch {
-      return true;
-    }
+    return t.traverseFast(decorator, node => {
+      if (
+        t.isThisExpression(node) ||
+        t.isSuper(node) ||
+        t.isYieldExpression(node) ||
+        t.isAwaitExpression(node) ||
+        t.isIdentifier(node, { name: "arguments" }) ||
+        (classIdName && t.isIdentifier(node, { name: classIdName })) ||
+        (t.isMetaProperty(node) && node.meta.name !== "import")
+      ) {
+        return "stop";
+      }
+    });
   };
 
   const instancePrivateNames: string[] = [];
