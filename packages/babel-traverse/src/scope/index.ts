@@ -395,8 +395,10 @@ class Scope {
   inited;
 
   bindings: { [name: string]: Binding };
+  /** Only defined in the program scope */
   references?: Set<string>;
   globals: { [name: string]: t.Identifier | t.JSXIdentifier };
+  /** Only defined in the program scope */
   uids?: Set<string>;
   data: { [key: string | symbol]: unknown };
   crawling: boolean;
