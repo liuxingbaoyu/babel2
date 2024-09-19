@@ -92,13 +92,21 @@ function getTsPkgs(subRoot) {
           if (typeof exportPath === "object") {
             exportPath = exportPath.default;
           }
-          if (exportPath.startsWith("./lib") && exportPath.endsWith(".js")) {
+          if (
+            exportPath.startsWith("./lib") &&
+            (exportPath.endsWith(".js") || exportPath.endsWith(".cjs"))
+          ) {
             // remove the leading `.` and trailing `.js`
-            const subExport = _export.slice(1).replace(/\.js$/, "");
+            const subExport = _export
+              .slice(1)
+              .replace(/\.js$/, "")
+              .replace(/\.cjs$/, "");
             const subExportPath = exportPath
               .replace("./lib", "/src")
               .replace(/\.js$/, ".ts")
-              .replace(/\/index\.ts$/, "");
+              .replace(/\.cjs$/, ".cts")
+              .replace(/\/index\.ts$/, "")
+              .replace(/\/index\.cts$/, "");
             return [[subExport, subExportPath]];
           }
           return [];

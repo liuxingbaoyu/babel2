@@ -1,4 +1,5 @@
 import type { MessagePort } from "worker_threads";
+import type { ACTIONS } from "../types.cts";
 
 const babel = require("./babel-core.cjs");
 const handleMessage = require("./handle-message.cjs");
@@ -15,7 +16,7 @@ parentPort.addListener(
   }: {
     signal: Int32Array;
     port: MessagePort;
-    action: string;
+    action: ACTIONS;
     payload: any;
   }) => {
     let response;
