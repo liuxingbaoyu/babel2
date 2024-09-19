@@ -254,7 +254,7 @@ function buildTSConfig(pkgs, allDeps, hasOverrides) {
     ].filter(Boolean),
     include: pkgs
       .map(({ name, relative }) => {
-        return name === "@babel/eslint-parser"
+        return name === "@babel/eslint-parser" || name === "@babel/register"
           ? `../../${relative.slice(2)}/src/**/*.cts`
           : `../../${relative.slice(2)}/src/**/*.ts`;
       })

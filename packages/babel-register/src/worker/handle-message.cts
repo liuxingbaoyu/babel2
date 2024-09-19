@@ -1,7 +1,10 @@
-const babel = require("./babel-core.js");
-const { setOptions, transform, transformSync } = require("./transform.js");
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+import type { ACTIONS } from "../types.cts";
 
-module.exports = function handleMessage(action, payload) {
+const babel = require("./babel-core.cjs");
+const { setOptions, transform, transformSync } = require("./transform.cjs");
+
+module.exports = function handleMessage(action: ACTIONS, payload: any) {
   switch (action) {
     case "GET_DEFAULT_EXTENSIONS":
       return babel.DEFAULT_EXTENSIONS;
