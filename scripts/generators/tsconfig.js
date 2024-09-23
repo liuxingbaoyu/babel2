@@ -100,7 +100,8 @@ function getTsPkgs(subRoot) {
             const subExport = _export.slice(1).replace(/\.c?js$/, "");
             const subExportPath = exportPath
               .replace("./lib", "/src")
-              .replace(/\.c?js$/, ".cts")
+              .replace(/\.js$/, ".ts")
+              .replace(/\.cjs$/, ".cts")
               .replace(/\/index\.c?ts$/, "");
             return [[subExport, subExportPath]];
           }
