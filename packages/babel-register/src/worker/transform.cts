@@ -4,7 +4,7 @@ import path = require("path");
 import fs = require("fs");
 
 const babel = require("./babel-core.cjs");
-const registerCache = require("../cache.cjs");
+const registerCache = require("./cache.cjs");
 
 const nmRE = escapeRegExp(path.sep + "node_modules" + path.sep);
 
@@ -16,7 +16,7 @@ type CacheItem = { value: { code: string; map: any }; mtime: number };
 
 let cache: Record<string, CacheItem>;
 let transformOpts: any;
-exports.setOptions = function (opts: any) {
+function setOptions(opts: any) {
   if (opts.cache === false && cache) {
     registerCache.clear();
     cache = null;
@@ -52,9 +52,9 @@ exports.setOptions = function (opts: any) {
       new RegExp(`^${cwdRE}(?:${path.sep}.*)?${nmRE}`, "i"),
     ];
   }
-};
+}
 
-exports.transform = async function (input: string, filename: string) {
+async function transform(input: string, filename: string) {
   const opts = await babel.loadOptionsAsync({
     // sourceRoot can be overwritten
     sourceRoot: path.dirname(filename) + path.sep,
@@ -75,10 +75,12 @@ exports.transform = async function (input: string, filename: string) {
   });
 
   return store({ code, map });
-};
+}
+
+export = { setOptions, transform };
 
 if (!process.env.BABEL_8_BREAKING) {
-  exports.transformSync = function (input: string, filename: string) {
+  module.exports.transformSync = function (input: string, filename: string) {
     const opts = new babel.OptionManager().init({
       // sourceRoot can be overwritten
       sourceRoot: path.dirname(filename) + path.sep,

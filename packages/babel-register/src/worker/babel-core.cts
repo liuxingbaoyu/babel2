@@ -1,3 +1,5 @@
+"use strict";
+
 const cache = require("./cache.cjs");
 
 function initialize(babel: typeof import("@babel/core")) {

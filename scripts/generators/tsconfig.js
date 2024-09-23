@@ -97,12 +97,9 @@ function getTsPkgs(subRoot) {
             (exportPath.endsWith(".js") || exportPath.endsWith(".cjs"))
           ) {
             // remove the leading `.` and trailing `.js`
-            const subExport = _export
-              .slice(1)
-              .replace(/\.c?js$/, "");
+            const subExport = _export.slice(1).replace(/\.c?js$/, "");
             const subExportPath = exportPath
               .replace("./lib", "/src")
-              .replace(/\.js$/, ".ts")
               .replace(/\.c?js$/, ".cts")
               .replace(/\/index\.c?ts$/, "");
             return [[subExport, subExportPath]];

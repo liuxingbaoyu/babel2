@@ -2,12 +2,13 @@ import type { MessagePort } from "worker_threads";
 import type { ACTIONS } from "../types.cts";
 
 const babel = require("./babel-core.cjs");
-const handleMessage = require("./handle-message.cjs");
+import handleMessage = require("./handle-message.cjs");
 
-const { parentPort } = require("worker_threads");
+import workerTheads = require("worker_threads");
 
-parentPort.addListener(
+workerTheads.parentPort.addListener(
   "message",
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   async ({
     signal,
     port,

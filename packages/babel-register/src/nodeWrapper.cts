@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * This file wraps the implementation of register so all modules `require()`-ed
  * internally within register are stored in a separate module cache.

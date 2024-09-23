@@ -9,16 +9,16 @@ if (major < 12 || (major === 12 && minor < 3)) {
   );
 }
 
-const hook = require("./hook.cjs");
-const { WorkerClient } = require("./worker-client.cjs");
+import hook = require("./hook.cjs");
+import workerClient = require("./worker-client.cjs");
 
 let client: IClient;
 function register(opts?: Options) {
-  client ||= new WorkerClient();
-  return hook.register(client, opts);
+  client ||= new workerClient.WorkerClient();
+  hook.register(client, opts);
 }
 
-module.exports = Object.assign(register, {
+export = Object.assign(register, {
   revert: hook.revert,
   default: register,
   __esModule: true,

@@ -35,7 +35,7 @@ class Client implements IClient {
 // We need to run Babel in a worker because require hooks must
 // run synchronously, but many steps of Babel's config loading
 // (which is done for each file) can be asynchronous
-exports.WorkerClient = class WorkerClient extends Client {
+class WorkerClient extends Client {
   // These two require() calls are in deferred so that they are not imported in
   // older Node.js versions (which don't support workers).
   // TODO: Hoist them in Babel 8.
@@ -78,10 +78,12 @@ exports.WorkerClient = class WorkerClient extends Client {
     // the main process alive.
     this.#worker.unref();
   }
-};
+}
+
+export = { WorkerClient };
 
 if (!process.env.BABEL_8_BREAKING) {
-  exports.LocalClient = class LocalClient extends Client {
+  module.exports.LocalClient = class LocalClient extends Client {
     isLocalClient = true;
 
     static #handleMessage: (action: ACTIONS, payload: any) => any;

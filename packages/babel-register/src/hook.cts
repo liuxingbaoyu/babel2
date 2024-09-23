@@ -75,7 +75,7 @@ function compile(client: IClient, inputCode: string, filename: string) {
   return code;
 }
 
-exports.register = function register(client: IClient, opts: Options = {}) {
+function register(client: IClient, opts: Options = {}) {
   if (piratesRevert) piratesRevert();
 
   piratesRevert = pirates.addHook(
@@ -87,8 +87,10 @@ exports.register = function register(client: IClient, opts: Options = {}) {
   );
 
   client.setOptions(opts);
-};
+}
 
-exports.revert = function revert() {
+function revert() {
   if (piratesRevert) piratesRevert();
-};
+}
+
+export = { register, revert };

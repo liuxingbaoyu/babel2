@@ -2,20 +2,21 @@
 import type { ACTIONS } from "../types.cts";
 
 const babel = require("./babel-core.cjs");
-const { setOptions, transform, transformSync } = require("./transform.cjs");
+import transform = require("./transform.cjs");
 
-module.exports = function handleMessage(action: ACTIONS, payload: any) {
+export = function handleMessage(action: ACTIONS, payload: any) {
   switch (action) {
     case "GET_DEFAULT_EXTENSIONS":
       return babel.DEFAULT_EXTENSIONS;
     case "SET_OPTIONS":
-      setOptions(payload);
+      transform.setOptions(payload);
       return;
     case "TRANSFORM":
-      return transform(payload.code, payload.filename);
+      return transform.transform(payload.code, payload.filename);
     case "TRANSFORM_SYNC":
       if (!process.env.BABEL_8_BREAKING) {
-        return transformSync(payload.code, payload.filename);
+        // @ts-expect-error Babel 7
+        return transform.transformSync(payload.code, payload.filename);
       }
   }
 
