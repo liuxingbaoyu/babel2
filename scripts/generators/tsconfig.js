@@ -99,14 +99,12 @@ function getTsPkgs(subRoot) {
             // remove the leading `.` and trailing `.js`
             const subExport = _export
               .slice(1)
-              .replace(/\.js$/, "")
-              .replace(/\.cjs$/, "");
+              .replace(/\.c?js$/, "");
             const subExportPath = exportPath
               .replace("./lib", "/src")
               .replace(/\.js$/, ".ts")
-              .replace(/\.cjs$/, ".cts")
-              .replace(/\/index\.ts$/, "")
-              .replace(/\/index\.cts$/, "");
+              .replace(/\.c?js$/, ".cts")
+              .replace(/\/index\.c?ts$/, "");
             return [[subExport, subExportPath]];
           }
           return [];
