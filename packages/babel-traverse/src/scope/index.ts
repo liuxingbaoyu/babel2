@@ -938,7 +938,11 @@ class Scope {
         }
       }
     }
-    traverseForScope(path, collectorVisitor, state);
+    if (process.env.BABEL_8_BREAKING) {
+      traverseForScope(path, collectorVisitor, state);
+    } else {
+      path.traverse(collectorVisitor, state);
+    }
     this.crawling = false;
 
     // register assignments
