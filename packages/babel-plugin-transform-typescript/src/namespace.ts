@@ -1,12 +1,41 @@
-import { template, types as t, type NodePath } from "@babel/core";
+import { template, types as t, type NodePath, type Scope } from "@babel/core";
 
 import { registerGlobalType } from "./global-types.ts";
+
+const namespaceScopes = new WeakMap<t.Node, Set<string>>();
+const namespaceNames = new WeakMap<t.FunctionExpression, string>();
+
+function getNamespaceBindingScopeNode(scope: Scope, name: string) {
+  do {
+    if (scope.hasOwnBinding(name)) {
+      return;
+    }
+    if (namespaceScopes.get(scope.path.node)?.has(name)) {
+      return scope.path.node as t.FunctionExpression;
+    }
+  } while ((scope = scope.parent));
+}
 
 export function getFirstIdentifier(node: t.TSEntityName): t.Identifier {
   if (t.isIdentifier(node)) {
     return node;
   }
   return getFirstIdentifier(node.left);
+}
+
+export function handleIdentifier(path: NodePath<t.Identifier>) {
+  if (path.parentPath.isMemberExpression()) {
+    return;
+  }
+  const scopeNode = getNamespaceBindingScopeNode(path.scope, path.node.name);
+  if (scopeNode) {
+    path.replaceWith(
+      t.memberExpression(
+        t.identifier(namespaceNames.get(scopeNode)),
+        path.node,
+      ),
+    );
+  }
 }
 
 export default function transpileNamespace(
@@ -171,6 +200,8 @@ function handleNested(
 
   let isEmpty = true;
 
+  const namespaceBindingNames = new Set<string>();
+
   for (let i = 0; i < namespaceTopLevel.length; i++) {
     const subNode = namespaceTopLevel[i];
 
@@ -224,6 +255,13 @@ function handleNested(
     }
 
     if ("declare" in subNode.declaration && subNode.declaration.declare) {
+      if (subNode.declaration.type === "VariableDeclaration") {
+        subNode.declaration.declarations.forEach(decl => {
+          if (t.isIdentifier(decl.id)) {
+            namespaceBindingNames.add(decl.id.name);
+          }
+        });
+      }
       continue;
     }
 
@@ -305,9 +343,16 @@ function handleNested(
     `;
   }
 
-  return template.statement.ast`
+  const ast = template.statement.ast`
     (function (${t.identifier(name)}) {
       ${namespaceTopLevel}
     })(${realName} || (${t.cloneNode(realName)} = ${fallthroughValue}));
-  `;
+  ` as t.Statement & {
+    expression: t.CallExpression & { callee: t.FunctionExpression };
+  };
+
+  namespaceScopes.set(ast.expression.callee, namespaceBindingNames);
+  namespaceNames.set(ast.expression.callee, name);
+
+  return ast;
 }
